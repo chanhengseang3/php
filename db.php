@@ -14,7 +14,7 @@ function getPdo(): PDO
     $host = getenv('DB_HOST') ?: '127.0.0.1';
     $dbName = getenv('DB_NAME') ?: 'coffee_kiosk';
     $user = getenv('DB_USER') ?: 'root';
-    $password = getenv('DB_PASS') ?: '';
+    $password = getenv('DB_PASS') ?: 'root';
     $port = (int) (getenv('DB_PORT') ?: 3306);
 
     $dsn = sprintf('mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4', $host, $port, $dbName);

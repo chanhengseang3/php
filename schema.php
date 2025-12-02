@@ -12,7 +12,7 @@ declare(strict_types=1);
 $host = getenv('DB_HOST') ?: '127.0.0.1';
 $dbName = getenv('DB_NAME') ?: 'coffee_kiosk';
 $user = getenv('DB_USER') ?: 'root';
-$password = getenv('DB_PASS') ?: '';
+$password = getenv('DB_PASS') ?: 'root';
 $port = (int) (getenv('DB_PORT') ?: 3306);
 
 // Connect without selecting a database so we can create it if needed.

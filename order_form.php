@@ -38,7 +38,7 @@
             <option value="">Select a coffee</option>
             <?php foreach ($coffees as $coffee): ?>
                 <option value="<?= h((string) $coffee['id']); ?>" <?= ($coffee['id'] ?? null) == ($coffeeId ?? null) ? 'selected' : ''; ?>>
-                    <?= h($coffee['name']); ?> — $<?= number_format($coffee['base_price'], 2); ?>
+                    <?= h($coffee['name']); ?> — $<?= number_format((float) $coffee['base_price'], 2); ?>
                 </option>
             <?php endforeach; ?>
         </select>
@@ -50,7 +50,7 @@
             <option value="">Select a size</option>
             <?php foreach ($sizes as $size): ?>
                 <option value="<?= h((string) $size['id']); ?>" <?= ($size['id'] ?? null) == ($sizeId ?? null) ? 'selected' : ''; ?>>
-                    <?= h($size['label']); ?> (<?= h($size['ounces']); ?> oz) — +$<?= number_format($size['price_modifier'], 2); ?>
+                    <?= h($size['label']); ?> (<?= h($size['ounces']); ?> oz) — +$<?= number_format((float) $size['price_modifier'], 2); ?>
                 </option>
             <?php endforeach; ?>
         </select>
@@ -67,7 +67,7 @@
             <?php foreach ($sweeteners as $sweetener): ?>
                 <?php $selected = in_array((int) $sweetener['id'], $selectedSweetenerIds ?? [], true) ? 'selected' : ''; ?>
                 <option value="<?= h((string) $sweetener['id']); ?>" <?= $selected; ?>>
-                    <?= h($sweetener['name']); ?> (+$<?= number_format($sweetener['additional_cost'], 2); ?>)
+                    <?= h($sweetener['name']); ?> (+$<?= number_format((float) $sweetener['additional_cost'], 2); ?>)
                 </option>
             <?php endforeach; ?>
         </select>
@@ -79,7 +79,7 @@
             <?php foreach ($creamers as $creamer): ?>
                 <?php $selected = in_array((int) $creamer['id'], $selectedCreamerIds ?? [], true) ? 'selected' : ''; ?>
                 <option value="<?= h((string) $creamer['id']); ?>" <?= $selected; ?>>
-                    <?= h($creamer['name']); ?> <?= $creamer['is_flavored'] ? '(flavored)' : ''; ?> (+$<?= number_format($creamer['additional_cost'], 2); ?>)
+                    <?= h($creamer['name']); ?> <?= $creamer['is_flavored'] ? '(flavored)' : ''; ?> (+$<?= number_format((float) $creamer['additional_cost'], 2); ?>)
                 </option>
             <?php endforeach; ?>
         </select>

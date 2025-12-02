@@ -73,7 +73,7 @@ function h(?string $value): string
                 <div>
                     <strong><?= h($coffee['name']); ?></strong><br>
                     <?= h($coffee['description']); ?><br>
-                    Base: $<?= number_format($coffee['base_price'], 2); ?>
+                    Base: $<?= number_format((float) $coffee['base_price'], 2); ?>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -96,9 +96,9 @@ function h(?string $value): string
             <p><?= h($orderSummary['quantity']); ?> x <?= h($orderSummary['size']); ?> <?= h($orderSummary['coffee']); ?></p>
             <p>Sweeteners: <?= $orderSummary['sweeteners'] ? h(implode(', ', $orderSummary['sweeteners'])) : 'None'; ?></p>
             <p>Creamers: <?= $orderSummary['creamers'] ? h(implode(', ', $orderSummary['creamers'])) : 'None'; ?></p>
-            <p>Base total: $<?= number_format($orderSummary['line_total'], 2); ?></p>
-            <p>Extras total: $<?= number_format($orderSummary['extras_total'], 2); ?></p>
-            <p><strong>Grand total: $<?= number_format($orderSummary['order_total'], 2); ?></strong></p>
+            <p>Base total: $<?= number_format((float) $orderSummary['line_total'], 2); ?></p>
+            <p>Extras total: $<?= number_format((float) $orderSummary['extras_total'], 2); ?></p>
+            <p><strong>Grand total: $<?= number_format((float) $orderSummary['order_total'], 2); ?></strong></p>
         </div>
     <?php endif; ?>
 
