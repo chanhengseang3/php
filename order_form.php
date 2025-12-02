@@ -7,6 +7,14 @@
  */
 ?>
 <form method="post">
+    <?php
+    /**
+     * Implement CSRF token generation
+     * Store token in the session
+     * Add hidden field with token to preference and login forms
+     */
+    ?>
+    <input type="hidden" name="csrf_token" value="<?= h($csrfToken ?? getCsrfToken()); ?>">
     <label>
         Customer Name
         <input type="text" name="customer_name" required value="<?= h($_POST['customer_name'] ?? '') ?>">

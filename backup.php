@@ -1,5 +1,13 @@
 <?php
-session_start();
+require __DIR__ . '/security.php';
+startSecureSession();
+
+$hostHeader = (string) ($_SERVER['HTTP_HOST'] ?? '');
+$serverName = (string) ($_SERVER['SERVER_NAME'] ?? '');
+$allowedHosts = array_filter([
+    parse_url('http://' . $hostHeader, PHP_URL_HOST),
+    parse_url('http://' . $serverName, PHP_URL_HOST),
+]);
 
 const RECEIPT_FILE = __DIR__ . '/receipts.log';
 const TAX_RATE = 0.0725; // 7.25% city tax rate
@@ -447,16 +455,28 @@ $menu = new Menu($menuItems);
 $validUsername = 'chanheng';
 $validPassword = 'chanhengCoffeShop!@#123';
 $authError = '';
+$loginCsrfToken = getCsrfToken();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['password'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    if ($username === $validUsername && $password === $validPassword) {
-        $_SESSION['isAuthenticated'] = true;
-        $_SESSION['username'] = $username;
+    /**
+     * Validate CSRF tokens in submit handlers
+     * Reject requests without matching tokens
+     * Optionally validate origin or referer headers for sensitive endpoints
+     */
+    if (!validateCsrfToken($_POST['csrf_token'] ?? null)) {
+        $authError = 'Security verification failed. Please refresh and try again.';
+    } elseif (!validateRequestOrigin($allowedHosts)) {
+        $authError = 'Request origin could not be verified.';
     } else {
-        $authError = 'Access denied. Invalid credentials. Please try again.';
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        if ($username === $validUsername && $password === $validPassword) {
+            $_SESSION['isAuthenticated'] = true;
+            $_SESSION['username'] = $username;
+        } else {
+            $authError = 'Access denied. Invalid credentials. Please try again.';
+        }
     }
 }
 
@@ -590,6 +610,14 @@ $recentReceipts = $isLoggedIn ? fetchRecentReceipts(4) : [];
                 <p class="error"><?= htmlspecialchars($authError) ?></p>
             <?php endif; ?>
             <form method="post">
+                <?php
+                /**
+                 * Implement CSRF token generation
+                 * Store token in the session
+                 * Add hidden field with token to preference and login forms
+                 */
+                ?>
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($loginCsrfToken); ?>">
                 <label>
                     Username:
                     <input type="text" name="username" required>

@@ -11,6 +11,24 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     return;
 }
 
+/**
+ * Validate CSRF tokens in submit handlers
+ * Reject requests without matching tokens
+ * Optionally validate origin or referer headers for sensitive endpoints
+ */
+$submittedToken = $_POST['csrf_token'] ?? null;
+if (!validateCsrfToken(is_string($submittedToken) ? $submittedToken : null)) {
+    $errors[] = 'Invalid or missing form token. Please refresh and try again.';
+
+    return;
+}
+
+if (!validateRequestOrigin($allowedHosts ?? [])) {
+    $errors[] = 'Request origin could not be verified.';
+
+    return;
+}
+
 $customerName = trim((string) ($_POST['customer_name'] ?? ''));
 $customerEmail = strtolower(trim((string) ($_POST['customer_email'] ?? '')));
 $customerPhone = trim((string) ($_POST['customer_phone'] ?? ''));

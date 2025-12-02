@@ -8,8 +8,18 @@
 
 declare(strict_types=1);
 
+require __DIR__ . '/security.php';
 require __DIR__ . '/db.php';
 
+$hostHeader = (string) ($_SERVER['HTTP_HOST'] ?? '');
+$serverName = (string) ($_SERVER['SERVER_NAME'] ?? '');
+$allowedHosts = array_filter([
+    parse_url('http://' . $hostHeader, PHP_URL_HOST),
+    parse_url('http://' . $serverName, PHP_URL_HOST),
+]);
+
+startSecureSession();
+$csrfToken = getCsrfToken();
 $pdo = getPdo();
 
 // Fetch catalog data once for display + validation.
