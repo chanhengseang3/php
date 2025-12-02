@@ -39,7 +39,7 @@ $selectedCreamerIds = [];
 // Handle form submission in a dedicated processor (step 5).
 require __DIR__ . '/process_order.php';
 
-function h(?string $value): string
+function h($value): string
 {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
