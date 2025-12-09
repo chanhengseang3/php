@@ -6,7 +6,7 @@
  * Expects catalog arrays and state variables from index.php.
  */
 ?>
-<form method="post">
+<form method="post" data-order-form>
     <?php
     /**
      * Implement CSRF token generation
@@ -85,5 +85,10 @@
         </select>
     </label>
 
-    <button type="submit">Submit Order</button>
+    <div class="preview" data-price-preview>Pricing will update as you pick options.</div>
+
+    <div class="form-actions">
+        <button type="submit">Add to Cart</button>
+        <span class="muted" data-cart-status></span>
+    </div>
 </form>
